@@ -6,7 +6,7 @@
 | Script           | Compares names in directories using... |
 | ---:             | :--- |
 | `commdir.while`  | ... a `while` loop. The `while` loop is powered by `read`ing filenames piped into it from `getAllFileNames`.
-| `commdir.for`    | ... a `for` loop. The `for` loop is powered by examining a list of filenames provided by `getAllFileNames`.  Set `IFS` appropriately.
+| `commdir.for`    | ... a `for` loop. The `for` loop is powered by examining a list of filenames provided by `getAllFileNames`. 
 | `commdir.shared` | Provides two utility functions (`getAllFileNames` and `classifyFile`) used by the other two scripts. `commdir.shared` itself is never executed, but its contents are loaded into the other two scripts (as a [library](https://en.wikipedia.org/wiki/Library_(computing)#Shared_libraries)) via the `.` command.
 
 ### `commdir.shared`
@@ -30,19 +30,7 @@
   * MUST NOT descend into subdirectories looking for names -- top-level only
   * although directories' names are not output, a file's name in one directory may match a non-file's name in another directory. The name shall be included in the output since it corresponds to a file's name in one of the directories.
   Eg: if `foo` is a file's name in one directory, it will be included in the output regardless of if there is a directory named `foo` in any of the other directories.
-* Hints:
-  * be able to handle any `$#`
-  * easiest to do as a *single* for loop
-  * for each arg: in a `(subshell)`, `cd` to the target directory, then print its filenames
-    * makes removing the directory component of file's path much easier)
-  * DON'T use `ls` -- it's not suitable as part of a pipeline
-    * its exact output format can vary depending on platform and settings. Eg: how it handles special characters in filenames
-    * `man find`, `-maxdepth`, `-type`
-  * only output *files'* names
-  * DON'T try to use `comm` or `diff`
-    * a *set union* is everything, with no duplicates
-  * sort the output, then remove duplicates
-  * approximate function length: 7 to 10 lines
+
 
 #### `commdir.shared: classifyFile()`
 
@@ -65,16 +53,6 @@
   * `2` if the file name is in both directories, but there is trouble reading either files' contents
 * Precondition:
   * the provided name MUST correspond to a file in at least one of the provided directories
-* Hints:
-  * this helper function operates on *one* name at a time
-  * DON'T try to use `diff` or `comm`
-  * use a large `if elif else if` as the main construct
-    * use `[]` tests with `-f`, `-e`, `&&`, `||`, and `!` as the conditions
-  * use `cmp` to compare files (after you've established that the name corresponds to two files)
-    * use a `case` to react to `cmp`'s result
-    * probably want to silence all output from `cmp`
-  * remember to BOTH produce output AND return a value
-  * approximate function length: 25 to 30 lines
 
 
 ### `commdir.{while,for}`
@@ -101,28 +79,7 @@ readonly scriptDir="${real0%/*}"
   * `2` if any file(s) had '?' output
   * `0` if all files had '=' output ([or there were no files to output](https://en.wikipedia.org/wiki/Vacuous_truth))
   * `1` otherwise
-* Hints `comdir.{for,while}`:
-  * call `classifyFile` inside the loop
-    * use a `case` to handle checking and setting various exit statuses appropriately
-  * run `cowsay -t 'Use a variable to remember something...'`
-* Hints `commdir.for`:
-  * use a command substitution to run `getAllFileNames` in the `for`'s *list*
-  * the list is one entry per line -- set `IFS` appropriately
-* Hints `commdir.while`:
-  * you'll need to properly scope a variable
-    * which is tricky because the | creates a subprocess with its own address space
-    * ensure that the variable is set and read in the same address space
-    * SO: pipe `getAllFileNames` into a `{}` that contains the both variable and the `while` loop.
-    Eg:
-    ```bash
-    foo | {  # 'foo' in one address space, {} in another
-      x='bar'
-      while ... ; do
-        ...
-      done
-      ...
-    }
-    ```
+
 
 #### Example Behaviour
 
