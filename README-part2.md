@@ -5,7 +5,7 @@
 
 | Script           | Compares names in directories using... |
 | ---:             | :--- |
-| `commdir.while`  | ... a `while` loop. The `while` loop is powered by `read`ing filenames piped into it from `getAllFileNames`. Set `IFS` appropriately.
+| `commdir.while`  | ... a `while` loop. The `while` loop is powered by `read`ing filenames piped into it from `getAllFileNames`.
 | `commdir.for`    | ... a `for` loop. The `for` loop is powered by examining a list of filenames provided by `getAllFileNames`.  Set `IFS` appropriately.
 | `commdir.shared` | Provides two utility functions (`getAllFileNames` and `classifyFile`) used by the other two scripts. `commdir.shared` itself is never executed, but its contents are loaded into the other two scripts (as a [library](https://en.wikipedia.org/wiki/Library_(computing)#Shared_libraries)) via the `.` command.
 
