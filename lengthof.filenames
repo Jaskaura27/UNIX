@@ -1,0 +1,17 @@
+#!/bin/sh
+
+actual=""
+sum=0
+for file in *; do
+  if [ "$actual" = "" ] ; then
+    actual="${#file}"
+    sum=$(($sum+${#file}))
+    continue
+  fi
+  actual="${actual}\n${#file}"
+  sum=$(($sum+${#file}))
+done
+actual="${actual}\n==\n${sum}"
+echo $actual
+
+# TODO

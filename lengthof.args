@@ -1,0 +1,15 @@
+#!/bin/sh
+
+actual=""
+sum=0
+ for arg in "$@" ; do
+  if [ "$actual" = "" ] ; then
+    actual="${#arg}"
+    sum=$(($sum+${#arg}))
+    continue
+  fi
+  actual="${actual}\n${#arg}"
+  sum=$(($sum+${#arg}))
+done
+actual="${actual}\n==\n${sum}"
+echo $actual

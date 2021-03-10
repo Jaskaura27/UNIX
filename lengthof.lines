@@ -1,0 +1,15 @@
+#!/bin/sh
+
+actual=""
+sum=0
+while IFS= read -r line ; do
+  if [ "$actual" = "" ] ; then
+    actual="${#line}"
+    sum=$(($sum+${#line}))
+    continue
+  fi
+  actual="${actual}\n${#line}"
+  sum=$(($sum+${#line}))
+done
+actual="${actual}\n==\n${sum}"
+echo "$actual"

@@ -1,0 +1,64 @@
+#!/bin/sh
+
+usage() {
+	cat <<- EOF
+		See corresponding README.md
+	EOF
+
+	[ $# -eq 0 ] || {
+		echo
+		printf -- '%s\n' "$@"
+		exit 2
+	}
+} >&2
+
+[ $# -eq 2 ] || {
+	usage "Invalid arguments"
+}
+
+(cd "$1") && (cd "$2") || {
+	echo "Invalid directory"
+	exit 2
+}
+
+##### modify the functions below
+##### See descriptions in README.md
+
+getAllFileNames() {
+	#files=""
+	for dir in "$@"; do
+		find  "$dir" -mindepth 1 -maxdepth 1 -type f -printf '%f\n'
+	done | sort | uniq
+	return 42
+}
+
+classifyFile() {
+	
+	
+	dir1=$1
+	dir2=$2
+	name=$3
+	path1="$dir1/$name"
+	path2="$dir2/$name"
+	
+	if [ -e $path1 ] && [ ! -e $path2 ]; then
+		echo "- ${name}\n"
+	elif [ ! -e $path1 ] && [ -e $path2 ]; then
+		echo "+ ${name}\n"
+	elif [ -e $path1 ] && [ -e $path2 ]; then 
+		if [ -f $path1 ] && [ ! -f $path2 ]; then
+			echo "x ${name}\n"
+		elif [ ! -f $path1 ] && [ -f $path2 ]; then
+			echo "x ${name}\n"
+	  else
+	  	case "$(cmp --silent $path1 $path2 ; echo "$?")" in
+	  		0) echo "= ${name}\n" && exit 0;;
+	  		1) echo "! ${name}\n" && exit 1;;
+	  		2) echo "? ${name}\n" && exit 2;;
+	  	esac
+	  fi
+	fi
+	
+	
+	return 42
+}
