@@ -11,7 +11,7 @@ The `lengthof` scripts tell you the (string) lengths of various inputs.  The len
 
 ### Sample Behaviours
 
-You should be able to copy & paste ALL of the text bellow (at once) to run all of the included test cases.  There should be no output when run this way.  Of course, you may copy & paste test cases one at a time to isolate and eliminate bugs.
+You should be able to copy & paste ALL of the text bellow (at once) to run all of the included test cases.  There should be no output when run this way.
 
 Note: while these tests are extensive, they are not exhaustive. They are not guaranteed to be either necessary, nor sufficient.
 
